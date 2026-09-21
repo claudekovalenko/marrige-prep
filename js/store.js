@@ -1,5 +1,5 @@
 // Local-first state. Everything lives in this browser; nothing is sent anywhere.
-import { PILLARS, HABITS } from './data.js';
+import { PILLARS, HABITS, SEED_ENCOURAGEMENTS } from './data.js';
 
 const KEY = 'marriage-prep:v1';
 const SCHEMA = 1;
@@ -15,6 +15,7 @@ function blank() {
     habits: {},
     customHabits: [],
     journal: [],
+    encouragements: SEED_ENCOURAGEMENTS.map((e) => Object.assign({}, e)),
     settings: { theme: 'auto', name: '' }
   };
 }
@@ -29,6 +30,11 @@ function normalize(raw) {
     habits: {},
     customHabits: Array.isArray(s.customHabits) ? s.customHabits : [],
     journal: Array.isArray(s.journal) ? s.journal : [],
+    // Absent means this is a first run or an older backup, so seed it. An empty
+    // array means they deleted them on purpose, so leave it empty.
+    encouragements: Array.isArray(s.encouragements)
+      ? s.encouragements
+      : SEED_ENCOURAGEMENTS.map((e) => Object.assign({}, e)),
     settings: Object.assign({}, base.settings, s.settings || {})
   };
   for (const p of PILLARS) {
@@ -274,6 +280,75 @@ export function markAnswered(id) {
   update((s) => {
     const e = s.journal.find((x) => x.id === id);
     if (e) e.answeredAt = e.answeredAt ? null : new Date().toISOString();
+  });
+}
+
+/** The longest run of consecutive marked days, ever. */
+export function bestStreak(habitId) {
+  const log = (state.habits[habitId] && state.habits[habitId].log) || {};
+  const days = Object.keys(log).filter((k) => log[k]).sort();
+  let best = 0;
+  let run = 0;
+  let prev = null;
+  for (const key of days) {
+    const [y, m, d] = key.split('-').map(Number);
+    const cur = new Date(y, m - 1, d);
+    run = prev && Math.round((cur - prev) / 86400000) === 1 ? run + 1 : 1;
+    if (run > best) best = run;
+    prev = cur;
+  }
+  return best;
+}
+
+/* ---------- encouragements ---------- */
+
+export function encouragements() {
+  return state.encouragements;
+}
+
+export function pinnedEncouragement() {
+  return state.encouragements.find((e) => e.pinned) || state.encouragements[0] || null;
+}
+
+export function addEncouragement({ title, text, source }) {
+  const clean = String(text || '').trim();
+  if (!clean) return null;
+  const id = 'e_' + Math.random().toString(36).slice(2, 9);
+  update((s) => {
+    s.encouragements.unshift({
+      id,
+      title: String(title || '').trim() || 'Remember this',
+      source: String(source || '').trim(),
+      text: clean,
+      at: new Date().toISOString(),
+      pinned: s.encouragements.length === 0
+    });
+  });
+  return id;
+}
+
+export function editEncouragement(id, { title, text, source }) {
+  update((s) => {
+    const e = s.encouragements.find((x) => x.id === id);
+    if (!e) return;
+    if (title !== undefined) e.title = String(title).trim() || e.title;
+    if (source !== undefined) e.source = String(source).trim();
+    if (text !== undefined && String(text).trim()) e.text = String(text).trim();
+  });
+}
+
+export function removeEncouragement(id) {
+  update((s) => {
+    const wasPinned = (s.encouragements.find((e) => e.id === id) || {}).pinned;
+    s.encouragements = s.encouragements.filter((e) => e.id !== id);
+    if (wasPinned && s.encouragements.length) s.encouragements[0].pinned = true;
+  });
+}
+
+/** Exactly one can be pinned; pinning the pinned one leaves it pinned. */
+export function pinEncouragement(id) {
+  update((s) => {
+    for (const e of s.encouragements) e.pinned = e.id === id;
   });
 }
 

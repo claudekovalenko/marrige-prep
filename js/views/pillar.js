@@ -44,6 +44,19 @@ export function pillarView(id) {
       </section>
 
       ${raw(
+        pillar.streakHabit
+          ? `<section class="card">
+              <h3 class="card-title">Days clean</h3>
+              <div class="stats">
+                <div class="stat"><div class="stat-num">${store.streak(pillar.streakHabit)}</div><span class="stat-label">Right now</span></div>
+                <div class="stat"><div class="stat-num">${store.bestStreak(pillar.streakHabit)}</div><span class="stat-label">Longest</span></div>
+              </div>
+              <p class="footnote">Marked on Today. A fall resets the count, never the covenant \u2014 there is no condemnation for those who are in Christ Jesus.</p>
+            </section>`
+          : ''
+      )}
+
+      ${raw(
         pillar.later
           ? `<section class="card note-later">
               <h3 class="card-title">Not yet</h3>

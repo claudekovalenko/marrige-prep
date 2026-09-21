@@ -68,7 +68,9 @@ const ICONS = {
   flame: '<path d="M12 2.8s5.4 4 5.4 9.1A5.4 5.4 0 0 1 12 21.2a5.4 5.4 0 0 1-5.4-9.3c1-1.6 2.2-2.3 2.6-4 .8 1 1.4 1.8 1.6 3 1-1.6 1.2-4.3 1.2-8.1Z"/>',
   vine: '<path d="M12 21V7"/><path d="M12 12c-3.2 0-5.4-1.8-5.4-5C9.8 7 12 8.8 12 12Z"/><path d="M12 15c3.2 0 5.4-1.8 5.4-5-3.2 0-5.4 1.8-5.4 5Z"/>',
   hands: '<path d="M8 21v-5.5L5.2 12a1.6 1.6 0 0 1 2.6-1.9L9.6 12V4.6a1.6 1.6 0 0 1 3.2 0V11"/><path d="M12.8 11V5.8a1.6 1.6 0 0 1 3.2 0V12l1.4-1.6a1.6 1.6 0 0 1 2.4 2.1L16 17.4V21"/>',
-  ring: '<circle cx="12" cy="14.6" r="5.4"/><path d="m9.4 9.4 2.6-3.8 2.6 3.8M9.6 5.6h4.8"/>'
+  ring: '<circle cx="12" cy="14.6" r="5.4"/><path d="m9.4 9.4 2.6-3.8 2.6 3.8M9.6 5.6h4.8"/>',
+  shield: '<path d="M12 2.9l7 2.8v6.1c0 4.2-2.9 7.6-7 9.3-4.1-1.7-7-5.1-7-9.3V5.7Z"/><path d="m8.8 12.1 2.2 2.3 4.2-4.6"/>',
+  anchor: '<circle cx="12" cy="5.2" r="2.3"/><path d="M12 7.5V21M8.4 10.6h7.2M4 14.2a8 8 0 0 0 16 0"/>'
 };
 
 export function icon(name, cls = 'pill-icon') {
@@ -90,4 +92,10 @@ export function shortDate(iso) {
 
 export function dayLetter(d) {
   return ['S', 'M', 'T', 'W', 'T', 'F', 'S'][d.getDay()];
+}
+
+const NUMBER_WORDS = ['No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve'];
+
+export function spell(n) {
+  return NUMBER_WORDS[n] || String(n);
 }

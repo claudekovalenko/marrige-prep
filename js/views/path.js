@@ -1,15 +1,19 @@
 import { PILLARS } from '../data.js';
 import * as store from '../store.js';
-import { html, raw, el, icon, ring } from '../ui.js';
+import { html, raw, el, icon, ring, spell } from '../ui.js';
 
 export function pathView() {
   const overall = store.overallProgress();
 
-  const cards = PILLARS.map((p) => {
+  const ordered = PILLARS.slice().sort((a, b) => (b.priority ? 1 : 0) - (a.priority ? 1 : 0));
+
+  const cards = ordered.map((p) => {
     const pr = store.pillarProgress(p);
     const badge = p.later
       ? '<span class="badge badge-later">In due time</span>'
-      : p.ongoing
+      : p.priority
+        ? '<span class="badge badge-priority">Priority</span>'
+        : p.ongoing
         ? '<span class="badge badge-ongoing">Ongoing</span>'
         : pr.pct === 100
           ? '<span class="badge badge-done">Complete</span>'
@@ -31,7 +35,7 @@ export function pathView() {
   return el(html`
     <div class="stack">
       <section class="card">
-        <h2 class="card-title">Six things to prepare</h2>
+        <h2 class="card-title">${spell(PILLARS.length)} things to prepare</h2>
         <p class="muted">Built on one foundation, and none of it by my own strength.</p>
         <div class="bar"><div class="bar-fill" style="width:${overall.pct}%"></div></div>
         <p class="footnote">${overall.done} of ${overall.total} steps &middot; started ${new Date(store.getState().startedAt).getFullYear()}</p>

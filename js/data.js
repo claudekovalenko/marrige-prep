@@ -83,9 +83,34 @@ export const PILLARS = [
       { id: 'prayer', title: 'Keep a real prayer list — and write the answers down', hint: 'Faith is fed by remembering what He already did.' },
       { id: 'fast', title: 'Build a fasting rhythm', hint: 'Start with one meal, one day a week.' },
       { id: 'confess', title: 'Have one man who knows everything', hint: 'Unconfessed sin is the crack that widens under marriage.' },
-      { id: 'purity', title: 'Fight for purity with a real plan, not willpower', hint: 'Filters, accountability, and a phone that goes to bed before you do.' },
       { id: 'sabbath', title: 'Keep a weekly Sabbath', hint: 'Prove you trust God with the day you did not work.' },
       { id: 'witness', title: 'Share your faith with someone this month', hint: 'A man who cannot speak of Christ outside will not lead worship inside.' }
+    ]
+  },
+  {
+    id: 'purity',
+    title: 'Purity \u2014 Kept for Her',
+    short: 'Purity',
+    aim: 'Make the covenant with my eyes now, and keep it \u2014 so that what I bring her is whole, and so that the man at the altar is the same man in private.',
+    verse: 'I have made a covenant with my eyes; how then could I gaze at a virgin?',
+    ref: 'Job 31:1',
+    icon: 'shield',
+    priority: true,
+    streakHabit: 'clean',
+    steps: [
+      { id: 'covenant', title: 'Write the covenant with your eyes \u2014 and date it', hint: 'Job made it a decision before it was a temptation. Sign your name to it.' },
+      { id: 'access', title: 'Cut the access, on every device', hint: 'Filters, blockers, accountability software. Willpower alone has never once been enough.' },
+      { id: 'night', title: 'Put the phone out of the bedroom', hint: 'Most of it happens late and alone. Remove the late and the alone.' },
+      { id: 'brother', title: 'One man who gets the truth every week', hint: 'Not \u201cI struggled.\u201d The day, the hour, what happened, what you did next.' },
+      { id: 'pattern', title: 'Name the pattern honestly', hint: 'When, where, and what you were feeling. It is almost never actually about lust.' },
+      { id: 'escape', title: 'Decide now what you do in the moment', hint: 'Stand up, leave the room, call him, go outside. Decided in advance, not negotiated at 1am.' },
+      { id: 'confess', title: 'Confess in hours, not weeks', hint: 'The hiding does more damage than the fall. Bring it into the light fast.' },
+      { id: 'feed', title: 'Cut what feeds it upstream', hint: 'The shows, the accounts, the scroll, the second look. Guard the gate, not the room.' },
+      { id: 'root', title: 'Go after the root', hint: 'Loneliness, stress, boredom, shame. Kill the cause or you will keep fighting the symptom.' },
+      { id: 'grace', title: 'Receive the forgiveness and stop re-litigating it', hint: 'Condemnation is not conviction. One leads to repentance, the other to relapse.' },
+      { id: 'ninety', title: 'Ninety clean days', hint: 'Long enough to prove it is a life and not a streak of good luck.' },
+      { id: 'year', title: 'A clean year', hint: 'This is the one that changes what you believe about yourself.' },
+      { id: 'honest', title: 'Be able to tell her the truth', hint: 'Where you have been, and where you actually are now. Aim to have a good answer ready.' }
     ]
   },
   {
@@ -134,12 +159,12 @@ export const PILLARS = [
 export const HABITS = [
   { id: 'word', title: 'Time in the Word', cadence: 'daily', pillar: 'god' },
   { id: 'pray', title: 'Prayer', cadence: 'daily', pillar: 'god' },
+  { id: 'clean', title: 'Clean day', cadence: 'daily', pillar: 'purity' },
   { id: 'train', title: 'Train', cadence: 'weekly', target: 4, pillar: 'body' },
   { id: 'read', title: 'Read 10 pages', cadence: 'daily', pillar: 'father' },
   { id: 'money', title: 'Check the budget', cadence: 'weekly', target: 1, pillar: 'provision' },
   { id: 'gather', title: 'Gather with the church', cadence: 'weekly', target: 1, pillar: 'church' },
-  { id: 'rest', title: 'Sabbath / rest', cadence: 'weekly', target: 1, pillar: 'god' },
-  { id: 'clean', title: 'Clean day — purity', cadence: 'daily', pillar: 'god' }
+  { id: 'rest', title: 'Sabbath / rest', cadence: 'weekly', target: 1, pillar: 'god' }
 ];
 
 // One for each day of the month; the app picks by day-of-year so it rotates.
@@ -175,6 +200,35 @@ export const VERSES = [
   { text: 'Cast your burden on the LORD, and he will sustain you.', ref: 'Psalm 55:22' },
   { text: 'And whatever you ask in prayer, you will receive, if you have faith.', ref: 'Matthew 21:22' },
   { text: 'He must manage his own household well.', ref: '1 Timothy 3:4' }
+];
+
+// Seeded once, then it is yours to edit, add to, or delete.
+export const SEED_ENCOURAGEMENTS = [
+  {
+    id: 'aisle',
+    title: 'The aisle',
+    source: 'The vision He gave me',
+    text:
+      'I saw myself walking down the aisle, and I did not look to the right or to the left. ' +
+      'Not at the pews. Not at the girls. Not at anyone. Only forward.\n\n' +
+      'And she was there, waiting for me at the altar \u2014 and I knew it with a deep trust. ' +
+      'Trust that God was the one bringing her.\n\n' +
+      'That is how I want to walk now, years before the aisle. And that is how I want to walk ' +
+      'after it, in the marriage: locked in, eyes forward, not looking to the right or to the left.',
+    pinned: true
+  }
+];
+
+// Fixed, not editable \u2014 for the days when the work is heavy.
+export const PROMISES = [
+  { text: 'No temptation has overtaken you that is not common to man. God is faithful, and he will not let you be tempted beyond your ability, but with the temptation he will also provide the way of escape.', ref: '1 Corinthians 10:13' },
+  { text: 'They who wait for the LORD shall renew their strength; they shall mount up with wings like eagles; they shall run and not be weary; they shall walk and not faint.', ref: 'Isaiah 40:31' },
+  { text: 'The steadfast love of the LORD never ceases; his mercies never come to an end; they are new every morning; great is your faithfulness.', ref: 'Lamentations 3:22\u201323' },
+  { text: 'And let us not grow weary of doing good, for in due season we will reap, if we do not give up.', ref: 'Galatians 6:9' },
+  { text: 'There is therefore now no condemnation for those who are in Christ Jesus.', ref: 'Romans 8:1' },
+  { text: 'He who began a good work in you will bring it to completion at the day of Jesus Christ.', ref: 'Philippians 1:6' },
+  { text: 'Create in me a clean heart, O God, and renew a right spirit within me.', ref: 'Psalm 51:10' },
+  { text: 'For the righteous falls seven times and rises again.', ref: 'Proverbs 24:16' }
 ];
 
 export const PILLAR_BY_ID = Object.fromEntries(PILLARS.map((p) => [p.id, p]));

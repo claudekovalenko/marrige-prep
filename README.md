@@ -6,10 +6,11 @@ A small, private, offline-first PWA for the work that comes before marriage — 
 
 ## What's in it
 
-**Six pillars**, each with concrete steps you can check off, your own notes, and a verse to anchor it:
+**Seven pillars**, each with concrete steps you can check off, your own notes, and a verse to anchor it:
 
 | Pillar | The aim |
 | --- | --- |
+| Purity — Kept for Her | Make the covenant with your eyes and keep it. Marked **Priority**, so it sorts first everywhere, and carries a days-clean counter |
 | A Church to Bring Her Into | Be rooted in one established local church — known, under elders, serving |
 | Enough to Carry a Household | Income, margin, and habits strong enough that she could stay home with the children |
 | Strength Worth Trusting | Train the body — for her, for the work of providing, for the endurance fatherhood asks |
@@ -18,6 +19,8 @@ A small, private, offline-first PWA for the work that comes before marriage — 
 | How I Will Pursue Her | Decided in a clear season, acted on later. Not yet |
 
 **Today** — the verse for the day, daily and weekly rhythms with streaks, and the next faithful step from each pillar.
+
+**Remember** — the things He has already shown you, kept where you can find them on a hard day. Seeded with the aisle vision; one of them is pinned to the Today screen, and you can add, edit, or re-pin any of them. Below your own is a fixed set of promises for when the waiting is long.
 
 **Journal** — prayers, reflections, and answered prayer, so you can look back and see what He actually did.
 
@@ -72,4 +75,6 @@ js/views/               today, path, pillar, journal, settings
 tests/                  store tests, run with node --test
 ```
 
-To change the content — different steps, different verses, a seventh pillar — edit `js/data.js`. Step ids are what progress is keyed to, so rename titles freely but keep ids stable.
+To change the content — different steps, different verses, another pillar — edit `js/data.js`. Step ids are what progress is keyed to, so rename titles freely but keep ids stable.
+
+A pillar can carry two optional flags: `priority: true` sorts it to the top of the Path and of Today's next steps and gives it a badge, and `streakHabit: '<habit id>'` puts a current/longest streak counter on its page.

@@ -1,5 +1,5 @@
 // Offline shell. Bump CACHE when any file below changes so clients refresh.
-const CACHE = 'prepare-v1';
+const CACHE = 'prepare-v2';
 
 const ASSETS = [
   './',
@@ -14,6 +14,7 @@ const ASSETS = [
   './js/views/today.js',
   './js/views/path.js',
   './js/views/pillar.js',
+  './js/views/remember.js',
   './js/views/journal.js',
   './js/views/settings.js',
   './icons/favicon.svg',

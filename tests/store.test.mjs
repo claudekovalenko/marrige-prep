@@ -124,3 +124,59 @@ test('subscribers are notified and can unsubscribe', () => {
   store.toggleStep('god', 'daily');
   assert.equal(hits, 1);
 });
+
+test('the purity pillar is present, prioritized, and tied to the clean-day habit', async () => {
+  const { HABIT_BY_ID } = await import('../js/data.js');
+  const purity = PILLARS.find((p) => p.id === 'purity');
+  assert.ok(purity, 'purity pillar exists');
+  assert.equal(purity.priority, true);
+  assert.equal(purity.streakHabit, 'clean');
+  assert.ok(HABIT_BY_ID.clean, 'the clean-day habit exists');
+  assert.equal(HABIT_BY_ID.clean.pillar, 'purity');
+  assert.equal(HABIT_BY_ID.clean.cadence, 'daily');
+  assert.ok(store.getState().pillars.purity, 'it has a slot in state');
+});
+
+test('encouragements are seeded on a first run and on an older backup', () => {
+  store.resetAll();
+  assert.equal(store.encouragements().length, 1);
+  assert.equal(store.pinnedEncouragement().id, 'aisle');
+  store.replaceState({ journal: [] }); // a backup written before this existed
+  assert.equal(store.encouragements().length, 1, 'seeded rather than left empty');
+  store.replaceState(Object.assign(JSON.parse(store.exportJSON()), { encouragements: [] }));
+  assert.equal(store.encouragements().length, 0, 'but an empty list is respected');
+});
+
+test('encouragements can be added, edited, pinned, and removed', () => {
+  store.resetAll();
+  const id = store.addEncouragement({ title: 'What he said', text: 'Wait for it.', source: 'Pastor' });
+  assert.ok(id);
+  assert.equal(store.encouragements()[0].id, id, 'newest first');
+  assert.equal(store.encouragements().find((e) => e.id === id).pinned, false, 'the seeded one keeps the pin');
+
+  store.pinEncouragement(id);
+  assert.equal(store.pinnedEncouragement().id, id);
+  assert.equal(store.encouragements().filter((e) => e.pinned).length, 1, 'only ever one pin');
+
+  store.editEncouragement(id, { text: 'Wait for it. He is not late.', title: '' });
+  const edited = store.encouragements().find((e) => e.id === id);
+  assert.equal(edited.text, 'Wait for it. He is not late.');
+  assert.equal(edited.title, 'What he said', 'a blank title leaves the old one alone');
+
+  store.removeEncouragement(id);
+  assert.equal(store.encouragements().length, 1);
+  assert.equal(store.pinnedEncouragement().id, 'aisle', 'the pin moves rather than vanishing');
+  assert.equal(store.addEncouragement({ title: 'x', text: '   ' }), null, 'blank text is rejected');
+});
+
+test('the clean-day streak tracks both the current run and the longest ever', () => {
+  store.resetAll();
+  const today = new Date();
+  for (const offset of [40, 39, 38, 37, 36, 20, 19, 1, 0]) {
+    store.toggleHabit('clean', store.dayKey(store.addDays(today, -offset)));
+  }
+  assert.equal(store.streak('clean'), 2, 'yesterday and today');
+  assert.equal(store.bestStreak('clean'), 5, 'the best run stands even after a fall');
+  store.resetAll();
+  assert.equal(store.bestStreak('clean'), 0);
+});

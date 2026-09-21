@@ -3,6 +3,7 @@ import { initShell, applyTheme, onShellChange } from './app-shell.js';
 import { todayView } from './views/today.js';
 import { pathView } from './views/path.js';
 import { pillarView } from './views/pillar.js';
+import { rememberView } from './views/remember.js';
 import { journalView } from './views/journal.js';
 import { settingsView } from './views/settings.js';
 
@@ -20,6 +21,8 @@ function viewFor(route) {
       return { node: pathView(), tab: 'path' };
     case 'pillar':
       return { node: pillarView(route.param), tab: 'path' };
+    case 'remember':
+      return { node: rememberView(), tab: 'remember' };
     case 'journal':
       return { node: journalView(), tab: 'journal' };
     case 'settings':

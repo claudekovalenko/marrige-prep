@@ -36,7 +36,12 @@ export function todayView() {
   const weekly = all.filter((h) => h.cadence === 'weekly');
   const greetingName = state.settings.name ? `, ${state.settings.name}` : '';
 
+  const pinned = store.pinnedEncouragement();
+
+  // What he called a priority comes first.
   const nextSteps = PILLARS.filter((p) => !p.later)
+    .slice()
+    .sort((a, b) => (b.priority ? 1 : 0) - (a.priority ? 1 : 0))
     .map((p) => {
       const step = store.allSteps(p).find((st) => !store.isDone(p.id, st.id));
       return step ? { pillar: p, step } : null;
@@ -50,6 +55,16 @@ export function todayView() {
         <blockquote class="verse">${v.text}</blockquote>
         <cite class="verse-ref">${v.ref}</cite>
       </section>
+
+      ${raw(
+        pinned
+          ? `<a class="card today-enc" href="#/remember">
+              <p class="eyebrow">Remember</p>
+              <p class="enc-text">${pinned.text.split('\n\n')[0].replace(/</g, '&lt;')}</p>
+              <span class="more">${pinned.title} &rarr;</span>
+            </a>`
+          : ''
+      )}
 
       <section class="card">
         <div class="row row-between">
