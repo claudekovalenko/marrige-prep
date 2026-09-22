@@ -99,3 +99,25 @@ const NUMBER_WORDS = ['No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven
 export function spell(n) {
   return NUMBER_WORDS[n] || String(n);
 }
+
+/**
+ * Two-tap confirmation. The first tap arms the button and changes its label,
+ * the second does the thing. Works where a confirm() dialog is not available,
+ * and is less fiddly than a dialog on a phone.
+ */
+export function arm(btn, prompt, done) {
+  if (btn.dataset.armed === '1') {
+    done();
+    return;
+  }
+  btn.dataset.armed = '1';
+  btn.dataset.label = btn.textContent;
+  btn.textContent = prompt;
+  btn.classList.add('is-armed');
+  setTimeout(() => {
+    if (!btn.isConnected || btn.dataset.armed !== '1') return;
+    btn.dataset.armed = '0';
+    btn.textContent = btn.dataset.label;
+    btn.classList.remove('is-armed');
+  }, 4000);
+}

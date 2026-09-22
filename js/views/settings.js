@@ -1,5 +1,5 @@
 import * as store from '../store.js';
-import { html, raw, el, on, esc, toast } from '../ui.js';
+import { html, raw, el, on, arm, esc, toast } from '../ui.js';
 import { applyTheme, installState, promptInstall } from '../app-shell.js';
 
 export function settingsView() {
@@ -123,7 +123,11 @@ export function settingsView() {
     setTimeout(() => URL.revokeObjectURL(url), 1000);
   });
 
-  on(root, '.import-btn', 'click', () => root.querySelector('.file-input').click());
+  on(root, '.import-btn', 'click', (e) => {
+    arm(e.currentTarget, 'Tap again \u2014 this replaces everything', () =>
+      root.querySelector('.file-input').click()
+    );
+  });
 
   on(root, '.file-input', 'change', (e) => {
     const file = e.currentTarget.files && e.currentTarget.files[0];
@@ -133,7 +137,6 @@ export function settingsView() {
       try {
         const data = JSON.parse(String(reader.result));
         if (!data || typeof data !== 'object') throw new Error('bad file');
-        if (!confirm('Restoring replaces everything currently saved on this device. Continue?')) return;
         store.replaceState(data);
         applyTheme(store.getState().settings.theme);
         toast('Backup restored.');
@@ -144,11 +147,11 @@ export function settingsView() {
     reader.readAsText(file);
   });
 
-  on(root, '.reset-btn', 'click', () => {
-    if (!confirm('Erase every step, habit, and journal entry on this device?')) return;
-    if (!confirm('This cannot be undone. Are you sure?')) return;
-    store.resetAll();
-    toast('Cleared.');
+  on(root, '.reset-btn', 'click', (e) => {
+    arm(e.currentTarget, 'Tap again to erase everything', () => {
+      store.resetAll();
+      toast('Cleared. Start again.');
+    });
   });
 
   return root;

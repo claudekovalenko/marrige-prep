@@ -1,6 +1,6 @@
 import { PILLARS, PILLAR_BY_ID } from '../data.js';
 import * as store from '../store.js';
-import { html, raw, el, on, esc, shortDate, toast } from '../ui.js';
+import { html, raw, el, on, arm, esc, shortDate, toast } from '../ui.js';
 
 const TYPES = [
   { id: 'prayer', label: 'Prayer' },
@@ -95,7 +95,8 @@ export function journalView() {
   on(root, '[data-answer]', 'click', (e) => store.markAnswered(e.currentTarget.dataset.answer));
 
   on(root, '[data-delete]', 'click', (e) => {
-    if (confirm('Delete this entry?')) store.removeEntry(e.currentTarget.dataset.delete);
+    const btn = e.currentTarget;
+    arm(btn, 'Tap again to delete', () => store.removeEntry(btn.dataset.delete));
   });
 
   return root;
